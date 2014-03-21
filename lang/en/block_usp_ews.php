@@ -1,11 +1,11 @@
 <?php
 /**
- * ews block English language translation
- *
- * @package    contrib
- * @subpackage block_ews
- */
- 
+* ews block English language translation
+*
+* @package    contrib
+* @subpackage block_ews
+*/
+
 $string['pluginname'] = 'USP EWS';
 
 // Module names
@@ -130,40 +130,40 @@ $string['activity'] = 'Activity';
 
 // Strings for main block display
 $string['status_flag'] = 'My Status Flag: ';
-$string['mydashboard'] = 'View Details'; 
+$string['mydashboard'] = 'View Details';
 $string['overviewlink'] = 'View Overview'; // RT
 $string['coursework_block'] = 'Coursework: ';
 $string['completion_percentage'] = 'Completion: ';
 $string['percentage'] = '%';
-$string['completion_rate'] = 'Completion '; // new
+$string['completion_rate'] = 'Completion ';
 //$string['login_index'] = 'Login Index: ';
-$string['login_index'] = 'Login '; // new
+$string['login_index'] = 'Login ';
 //$string['interact_index'] = 'Interaction Index: ';
-$string['interact'] = 'Interaction '; // new
-$string['config_block'] = 'Configure Block '; // new
-$string['myCanvas_interact'] = 'myCanvas_interact'; // new
-$string['myCanvas_login'] = 'myCanvas_login'; // new
-$string['myCanvas_completion'] = 'myCanvas_completion'; // new
+$string['interact'] = 'Interaction ';
+$string['config_block'] = 'Configure Block ';
+$string['myCanvas_interact'] = 'myCanvas_interact';
+$string['myCanvas_login'] = 'myCanvas_login';
+$string['myCanvas_completion'] = 'myCanvas_completion';
 // completion vs EWS
-$string['completion_used'] = 'Can\'t use Completion Tracking and EWS together. EWS is hidden for all view now, please disable Completion Tracking to use EWS.'; // new for corditor message
-$string['disable_completion'] = 'Disable Completion Tracking from the course'; // new
-$string['disable_completion_confirm'] = 'Are you sure you want to disable Completion Tracking from the course.'; // new
-$string['activity_setting_infor'] = 'Some of the activity needs attention, please goto EWS configuration and change where necessary.'; // new
-$string['aestrict'] = ' * '; // new
-$string['activity_setting_msg'] = 'The following activities marked with (*) needs attention since there settings have beeing changed.<br/> Please click edit icon to configure the setting and save the changes inorder to confirm the configuration is ok.'; // new
+$string['completion_used'] = 'Both Completion Tracking and {$a} cannot be used at the same time. To use {$a}, Completion Tracking needs to be turned off.';
+$string['disable_completion'] = 'Disable Completion Tracking from the course';
+$string['disable_completion_confirm'] = 'Are you sure you want to disable Completion Tracking from the course.';
+$string['activity_setting_infor'] = 'Some of the activity needs attention, please goto EWS configuration and change where necessary.';
+$string['aestrict'] = ' * ';
+$string['activity_setting_msg'] = 'The following activities marked with (*) needs attention since there settings have beeing changed.<br/> Please click edit icon to configure the setting and save the changes inorder to confirm the configuration is ok.';
 
 
 //tooltips
-$string['interactiongreen'] = 'Your participation is satisfactory'; // new
-$string['interactionorange'] = 'Your participation is average'; // new
-$string['interactionred'] = 'Your participation is unsatisfactory'; // new
-$string['logingreen'] = 'Your login frequency is satisfactory'; // new
-$string['loginorange'] = 'Your login frequency is average'; // new
-$string['loginred'] = 'Your login frequency is unsatisfactory'; // new
+$string['interactiongreen'] = 'Your participation is satisfactory';
+$string['interactionorange'] = 'Your participation is average';
+$string['interactionred'] = 'Your participation is unsatisfactory';
+$string['logingreen'] = 'Your login frequency is satisfactory';
+$string['loginorange'] = 'Your login frequency is average';
+$string['loginred'] = 'Your login frequency is unsatisfactory';
 
 // Strings for my dashboard
 $string['mystats'] = 'My Statistics';
-$string['mycom'] = 'Completion'; 
+$string['mycom'] = 'Completion';
 $string['myint'] = 'Participation'; //interaction
 $string['myach'] = 'Marksheet'; //achievement
 $string['aboutus'] = 'About EWS'; //achievement
@@ -234,12 +234,12 @@ $string['how_ordering_works'] = 'How ordering works';
 $string['how_ordering_works_help'] = '
 <p>There are two ways items in the Progress Bar can be ordered.</p>
 <ul>
-    <li><em>"Expected by" date-time</em> (default)<br />
-    The due dates or manually set dates of activities/resources are used to order items shown in the Progress Bar.
-    </li>
-    <li><em>Ordering in course</em><br />
-    Activities/resources are presented in the same order as they are on the course page. When this option is used, time-related aspects are disabled.
-    </li>
+<li><em>"Expected by" date-time</em> (default)<br />
+The due dates or manually set dates of activities/resources are used to order items shown in the Progress Bar.
+</li>
+<li><em>Ordering in course</em><br />
+Activities/resources are presented in the same order as they are on the course page. When this option is used, time-related aspects are disabled.
+</li>
 </ul>
 ';
 $string['why_display_now'] = 'Why you might want to hide/show the NOW indicator?';
@@ -297,9 +297,9 @@ $string['what_expected_by_means_help'] = '
 <p>If there is already a deadline associated with an activity, like an assignment deadline, this deadline can be used as the expected time for the event as long as the "Locked to Deadline" checkbox is checked. By unselecting locking an independant expected time can be created, and altering this will not affect the actual deadline of the activity.</p>
 <p>When you first visit the configuration page for the Progress Bar, or if you create a new activity/resource and return to the configuration page, a guess will be made about the expected date-time for the activity/resource.
 <ul>
-    <li>For an activity with an existing deadline, this deadline will used.</li>
-    <li>When there is no activity deadline, but the course format used is a weekly format, the end of the week (just before midnight Sunday) is assumed.</li>
-    <li>For an activity/resource not used in a weekly course format, the end of the current week (just before midnight next Sunday) is used.</li>
+<li>For an activity with an existing deadline, this deadline will used.</li>
+<li>When there is no activity deadline, but the course format used is a weekly format, the end of the week (just before midnight Sunday) is assumed.</li>
+<li>For an activity/resource not used in a weekly course format, the end of the current week (just before midnight next Sunday) is used.</li>
 </ul>
 </p>
 <p>Once an expected date-time is set, it is independant of any deadline or other information for that activity/resource.</p>
@@ -346,7 +346,7 @@ $string['progress'] = 'Progress';
 $string['picture'] = 'Pic';
 $string['progressbar'] = 'Progress Bar';
 $string['numlogin'] = 'Last 7 Days<br/> Login (Days)';
-$string['numloginexcel'] = 'Last 7 Days Login(Days)'; 
+$string['numloginexcel'] = 'Last 7 Days Login(Days)';
 $string['backtooverviewall'] = 'Back to Overview of Students';
 $string['backtofiltered'] = 'Back to filtered report';
 $string['backtoactivityreport'] = 'Back to activity report';
@@ -383,12 +383,12 @@ $string['leg_parti'] = 'Your Participation'; // RT
 $string['leg_class'] = 'Class Average'; // RT
 $string['leg_best'] = 'Best Student Participation'; // RT
 $string['min_requirement'] = 'Minimum required is {$a}%';
-$string['gp_loginsummary'] = 'Login Summary'; 
-$string['gp_loginxaxis'] = 'Weeks'; 
-$string['gp_loginyaxis'] = 'No. Days'; 
-$string['leg_loginparti'] = 'Your Login Days'; 
-$string['leg_stuloginparti'] = 'Students Login Days'; 
-$string['leg_loginclass'] = 'Class Login Average'; 
+$string['gp_loginsummary'] = 'Login Summary';
+$string['gp_loginxaxis'] = 'Weeks';
+$string['gp_loginyaxis'] = 'No. Days';
+$string['leg_loginparti'] = 'Your Login Days';
+$string['leg_stuloginparti'] = 'Students Login Days';
+$string['leg_loginclass'] = 'Class Login Average';
 $string['previous'] = 'Previous';
 $string['next'] = 'Next';
 
@@ -456,20 +456,29 @@ $string['cronpullinteraction'] = 'Pulled interaction table successfully.';
 $string['cronpullinteractionfail'] = 'Error in connection or No records in EWS interaction.. ';
 
 
-$string[''] = ''; // RT
+$string['notconfigured'] = '{$a} hasn\'t been configured yet.';
+$string['currentdate'] = 'Current Course Start Date: ';
+$string['datemismatch'] = 'Course Start Date is different.';
+$string['confirmdate'] = 'Please confirm Course Start date.';
+$string['updatedate'] = 'Update Date';
+$string['setdate'] = '';
+$string[''] = '';
+$string[''] = '';
+$string[''] = '';
+
 
 /******** About US string ************/
 $string['about_us_intro'] = 'Early Warning System is an experimental module which provides a weekly snapshot of the most important activities in the course. The system is purely designed as an indication to encourage your participation in areas that need more attention rather than categorizing your performance. It is just a guide, if you have unsatisfactory result on EWS dashboard, it doesn\'t mean you\'ll fail the course..';
 $string['about_us_dash'] = 'Dashboard';
 $string['about_us_status_infor'] = 'This is the measure of your overall performance and considers your login frequency, completion rate of tasks and participation (interaction) in the various online activities.<br>';
 $string['about_us_indicator'] = 'Summary of Indicators';
-$string['about_us_indicator_message'] = 'The indicators in the EWS dashboard can be interpreted as follows: 
-	<ul>
+$string['about_us_indicator_message'] = 'The indicators in the EWS dashboard can be interpreted as follows:
+<ul>
 <li>Green - Indicates above average/satisfactory performance. </li>
 <li>Orange - Indicates marginal/average performance. </li>
 <li>Red - Indicates below average/unsatisfactory performance. </li>
 </ul>
-Please use these indicators to improve your participation in the respective course elements. 
+Please use these indicators to improve your participation in the respective course elements.
 ';
 $string['about_us_logintitle'] = 'Login Trend Graph';
 $string['about_us_interacttitle'] = 'Graph of Weekly Course Interaction';

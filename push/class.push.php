@@ -97,10 +97,10 @@
 
 		
 		
-		function pull_usp_ews_log_record() {
+				function pull_usp_ews_log_record() {
 			// if there are courses with EWS
 			// then fore each course
-			$qry = "SELECT * FROM mdl_log";
+			$qry = "SELECT * FROM usp_ews_log";
 
 			$rs = $this->execute_query($qry);
 		   
@@ -109,28 +109,21 @@
                 return false;
             }
 			
-			//$arraypoint = 650;
-			$sql = "INSERT INTO {usp_ews_log} (time, userid, ip, course, module, cmid, action) VALUES";
+			$result = array();
 			for($i = 0; $line = mysql_fetch_array($rs, MYSQL_ASSOC); $i++){
-			/*	
-				if($i == $arraypoint){
-					$sql .= rtrim($sql, " ,") . ';';
-					$sql .= "INSERT INTO {usp_ews_log}(time, userid, ip, course, module, cmid, action) VALUES";
-					
-					$arraypoint += 650;
-				}
-			*/
+				$row = new stdclass;
+				$row->id = $line['id'];
+				$row->time = $line['time'];
+				$row->userid = $line['userid'];
+				$row->ip = $line['ip'];
+				$row->course = $line['course'];
+				$row->module = $line['module'];
+				$row->cmid = $line['cmid'];
+				$row->action = $line['action'];
 				
-				$sql .= "(" . $line['time'] . "," . $line['userid'] . ",'" . $line['ip'] . "'," . $line['course'] . ",'" . $line['module'] . "'," . $line['cmid'] . ",'" . $line['action'] . "')," ;
-
+				$result[] = $row;
 			}
-			 
-			 $mdl_query = rtrim($sql, " ,");
-//echo $mdl_query;
-			$DB = $this->getDB();
-			$result = $DB->execute($mdl_query);
-			
-			//$result = $DB->get_records_sql($sql);
+			 return $result;
 		}
 		
 		/**

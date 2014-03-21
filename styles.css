@@ -660,20 +660,23 @@ background: #4F4A4A;
 .usp_ews_info_message_aboutus{
 	text-align: justify;
 	background:#D1EBEF; padding: 3px; border: 1px solid #0AA3AF;
-	
-
 }
 .usp_ews_dashboard_img{
 	margin: 10px 30px 10px 10px;
 	float: left;
 	clear: both;
-
 }
 
 #usp_ews_dashboard_img{
 	border: 1px solid #ccc;
 }
 .usp_ews_dashboard_infor{
-	margin: 10px;
-	
+	margin: 10px;	
+}
+
+.usp_ews_coursedate
+{
+	border:1px solid #eee;
+	background:#f5f5f5;
+	padding: 3px 7px;
 }

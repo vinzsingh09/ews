@@ -21,9 +21,7 @@
 	mtrace('EWS Cron Started ................ ');
 	
 	$pushdata = new usp_ews_cron();
-	
-	$pushdata->pull_usp_ews_log_record();
-/*		
+		
 	// checking if ews is used in some courses atleast
 	$ews_used = $pushdata->check_mdl_usp_ews_config_not_empty();
 	
@@ -49,7 +47,9 @@
 				$expection = true;
 				$expectionall .= $e->getMessage(). get_string('in', 'block_usp_ews') . $e->getFile().  get_string('errorline', 'block_usp_ews') .$e->getLine() . get_string('cronbreakline', 'block_usp_ews');
 			} 
-
+			/********
+			*********can be set to be done once or twice a day
+			********/
 			//  only if connection with backend possible
 			if($disableprocessbackend){
 			   // first syncing the data from the backend
@@ -108,6 +108,9 @@
 				else
 					mtrace('failure sending config table');
 			
+				/********
+				*********can be set to be done once or twice a day
+				********/
 			
 				// Now push the students id with respected courses
 				$insertstudents = false;
@@ -246,5 +249,5 @@
 	else{
 		$pushdata->usp_ews_cron_log($time, time(), $timetake, 0, $expectionall);
 	}	
-*/
+
 	mtrace('EWS Cron Completed ................ ');

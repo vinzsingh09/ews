@@ -73,7 +73,6 @@ define('EWS_DEFAULT_MAX_RECORD', 1000); // estimated for 50 courses data
 define('EWS_DEFAULT_MAX_RECORD_PER_SEC', 3000);
 define('EWS_DEFAULT_LASTLOGID', 0);
 define('EWS_DEFAULT_PROCESSNEW', 1);
-
  
 /**
  * ** Provides information about monitorable modules
