@@ -9,34 +9,27 @@
 *   my_achievement: this part is captured from grade folder to dispaly detailed grade
 *					this will be changed in future..
 */
-
-	// Include required files
-	require_once(dirname(__FILE__) . '/../../config.php');   // moodle config file
-	require_once($CFG->dirroot.'/blocks/usp_ews/lib.php'); // usp_ews library file
-	require_once($CFG->libdir.'/tablelib.php');              // table library file
-	include_once($CFG->libdir.'/ddllib.php');				 // database library file
-
-	// Global variables needed
-	global $DB, $USER, $PAGE, $OUTPUT, $CFG;
-
+	
+	require_once(dirname(__FILE__) . '/../../config.php');
+	require_once($CFG->dirroot.'/blocks/usp_ews/lib.php');
+	require_once($CFG->libdir.'/tablelib.php');
+	
 	// Gather form data
 	$courseid = required_param('cid',PARAM_INT);  			 // course id
 	$inst_id  = required_param('inst_id', PARAM_INT);	     // instance id of the block
-	
-	// Determine course information
+		
 	if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 		print_error('nocourseid');
 	}
-
-	// checks if user is logged in
-	require_login($course, false);
 	
-	// Determine context information from the function using course id
+	require_login($course, false);	
+	
 	$context = context_course::instance($course->id, MUST_EXIST);
-	// build base url
-	$baseurl = new moodle_url('/blocks/usp_ews/editactivity.php', array(
-		'cid'=> $course->id, 'inst_id'=> $inst_id));
 	
+	$baseurl = new moodle_url('/blocks/usp_ews/editactivity.php', 
+		array('cid'=> $course->id, 'inst_id'=> $inst_id));
+	
+	// RT - TODO: Check if this is really required
 	$dbmanager = $DB->get_manager(); // loads ddl manager and xmldb classes
 		
 	$modules = usp_ews_modules_in_use($COURSE->id);
@@ -46,15 +39,15 @@
 	$PAGE->set_url($baseurl);
 	$PAGE->set_context($context);
 	$title = get_string('config_block_title', 'block_usp_ews');
-	$PAGE->set_title($title);
-	$PAGE->set_heading($course->fullname);
+	$PAGE->set_title($course->shortname . ': ' . $title);
+	$PAGE->set_heading($course->fullname . ': ' . $title);
+	$PAGE->navbar->add(get_string('pluginname', 'block_usp_ews'));
 	$PAGE->navbar->add($title);
 	$PAGE->set_pagelayout('standard');  
 	// for side blocks view
     //$PAGE->set_pagetype('course-view-' . $course->format);
 	
-	// Start page output
-	// prints the heading and subheading of the page
+	// Start page output	
 	echo $OUTPUT->header();
 	echo $OUTPUT->heading($title, 2);
 	// starts the main div container
@@ -65,16 +58,11 @@
 	// include the tab for configuration
 	include($CFG->dirroot.'/blocks/usp_ews/tabsconfig.php');
 	
-
 	$monitored = $DB->get_record('usp_ews_config', array('courseid' => $course->id, 'ewsinstanceid'=>$inst_id));
-
-	// list of activities in the course
-	// to check if monitoted activity still exists, to get name, visiblility
-	$modinfo_incourse = get_array_of_activities($course->id);	
 	
-	//if(empty($monitored) || ($inst_id != 0 && $monitored->ewsinstanceid != $inst_id)){
 	// if the course is set for the first time then the block configuration is all set to default values
-	if(empty($monitored)){			
+	if(empty($monitored))
+	{
 		$default_setting = new stdclass;
 		$default_setting->courseid = $course->id;
 		$default_setting->contextid = $context->id;
@@ -87,15 +75,68 @@
 		$default_setting->interactionweight = EWS_DEFAULT_INTERACT_WEIGHT;
 		$default_setting->minlogin = EWS_DEFAULT_LOGIN_PER_WEEK;
 		$default_setting->monitoreddata = '';
-		$default_setting->coursestartdate = $course->startdate;
-		$default_setting->lastupdatetimestamp = $course->startdate;
-		$default_setting->lastlogid = EWS_DEFAULT_LASTLOGID;
-		$default_setting->processnew = EWS_DEFAULT_PROCESSNEW;
+		$default_setting->coursestartdate = 0;
+		$default_setting->lastupdatetimestamp = 0;
+		$default_setting->processnew = 1;
+		$default_setting->lastlogid = 0;
 		
 		// inserting all the default values
-		$DB->insert_record('usp_ews_config', $default_setting);
+		if($DB->insert_record('usp_ews_config', $default_setting))
+		{
+			$monitored = $default_setting;
+		}		
 	}
-
+	
+	echo $OUTPUT->box_start('usp_ews_coursedate');
+	echo HTML_WRITER::start_tag('p') 
+		. get_string('currentdate', 'block_usp_ews') . userdate($course->startdate, get_string('strftimedate'))
+		.  HTML_WRITER::end_tag('p');
+	if($monitored->coursestartdate != $course->startdate)
+	{
+		require_once('coursedate_form.php');
+		
+		if ($data = data_submitted()) 
+		{		
+			if(isset($data->submitbutton)){
+				if($record = $DB->get_record('usp_ews_config', array('courseid' => $data->cid, 'ewsinstanceid'=>$data->inst_id)))
+				{
+					$date = $data->startdate;
+					$record->coursestartdate = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
+					$record->lastupdatetimestamp = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
+					
+					$DB->update_record('usp_ews_config', $record);
+					
+					$course->startdate = $record->coursestartdate;
+					$DB->update_record('course', $course);
+					
+					$params = array('inst_id'=>$data->inst_id, 'cid' => $data->cid);
+					$urladd = new moodle_url('/blocks/usp_ews/editactivity.php', $params);
+				
+					redirect(new moodle_url($urladd), get_string('changes_saved', 'block_usp_ews'));
+				}				
+			}
+		}
+	
+		if($monitored->coursestartdate == 0)
+		{
+			echo get_string('confirmdate', 'block_usp_ews');
+		}
+		else
+		{
+			echo get_string('datemismatch', 'block_usp_ews') . ' ' . get_string('confirmdate', 'block_usp_ews');
+		}
+		
+		$form = new coursedate_form(null, array('inst_id'=>$inst_id));		
+		$form->display();
+	}
+	echo $OUTPUT->box_end();
+	
+	
+	
+	// list of activities in the course
+	// to check if monitoted activity still exists, to get name, visiblility
+	$modinfo_incourse = get_array_of_activities($course->id);	
+	
 	// if activity configuration clicked
 	// showing the list of monitored activity
 	// displays none if none	
