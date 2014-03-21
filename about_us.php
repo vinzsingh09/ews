@@ -7,6 +7,7 @@
 	require_once($CFG->dirroot.'/blocks/usp_ews/lib.php'); // usp_ews library file
 	require_once($CFG->dirroot.'/course/lib.php');
 
+	
 	// message at the begining of the page
 	$inforoption = array('class' => 'usp_ews_info_message_aboutus');
 	$contenthtml .= HTML_WRITER::start_tag('div', array('class' => 'usp_ews_message_content'));
