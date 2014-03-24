@@ -137,7 +137,7 @@
 				  get_string('numloginexcel', 'block_usp_ews'),
 				  get_string('progress_percent', 'block_usp_ews'),
 				  get_string('interaction_status', 'block_usp_ews'),
-				  get_string('coursework', 'block_usp_ews'),
+				  get_string('coursetotal', 'block_usp_ews'), // marksheet
 				  get_string('activity_not_done', 'block_usp_ews')
                 );
 
