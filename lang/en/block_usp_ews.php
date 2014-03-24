@@ -127,6 +127,7 @@ $string['interactsatisfactory'] = 'Satisfactory';
 $string['interactunsatisfactory'] = 'Unsatisfactory';
 $string['interactaverage'] = 'Average';
 $string['activity'] = 'Activity';
+$string['coursetotal'] = 'Marksheet(Course Total)';
 
 // Strings for main block display
 $string['status_flag'] = 'My Status Flag: ';
