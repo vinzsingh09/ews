@@ -245,6 +245,12 @@
 			echo $OUTPUT->container_start('usp_ewsoverviewmenus');
 			echo '&nbsp;'.get_string('select_activity', 'block_usp_ews') . ':&nbsp;';
 			echo $OUTPUT->single_select($html_url, 'modinstanceid', $instanceoptions, $instanceid, null, 'activityform');
+			
+			// back button
+			$params = array('inst_id' => $inst_id,'cid' => $course->id);
+			$backurl = new moodle_url('/blocks/usp_ews/editactivity.php', $params);
+			echo $OUTPUT->single_button($backurl, get_string('back'));
+	
 			echo $OUTPUT->container_end();
 			
 		// if some activity is selected to be added
