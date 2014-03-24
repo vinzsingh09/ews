@@ -173,7 +173,21 @@ class block_usp_ews extends block_base {
 		// Dashboard for students
 		// check if user is student
 		// RT - TODO: use a better (more correct Moodle way) to determine this
-		$is_student = $DB->record_exists('role_assignments', array('roleid' =>5, 'userid' => $userid, 'contextid' => $context->id));
+		
+		
+		$role_assigned = get_user_roles($context);
+
+		$is_student = false;
+
+		if(count($role_assigned) > 1){
+			$is_student = false;
+		}else{
+			foreach($role_assigned as $role){
+				if($role->roleid == 5)
+					$is_student = true;
+			}
+		}
+		//$is_student = $DB->record_exists('role_assignments', array('roleid' =>5, 'userid' => $userid, 'contextid' => $context->id));
 		if($is_student && $this->configureddata->studentview)
 		{
 				/**
