@@ -199,11 +199,6 @@ class block_usp_ews extends block_base {
 				$sat = '<img src="'. $OUTPUT->pix_url('i/tick_green_small') .'" alt="" />';
 				$unsat = '<img src="'. $OUTPUT->pix_url('i/cross_red_small') .'" alt="" />';
 
-				// RT - TODO: Use styles instead
-				$colorgreen = get_string('attempted_colour', 'block_usp_ews');
-				$colororange = get_string('amber_colour', 'block_usp_ews');
-				$colorred = get_string('notAttempted_colour', 'block_usp_ews');
-
 				/* calculation done to determine the overall flag on main dashboard
 				 * total calculated taking:
 				 * 45% of the completion rate
