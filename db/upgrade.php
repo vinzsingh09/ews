@@ -27,8 +27,10 @@ function xmldb_block_usp_ews_upgrade($oldversion, $block) {
     }
 	
     
-	
-	if ($oldversion < 2014030100) {
+	// reason for change
+	// if the version was bigger than this value then it wont upgrade the database
+//2014030100	
+	if ($oldversion < 2014031204) {
 
          // Define table usp_ews_config to be created.
         $table = new xmldb_table('usp_ews_config');
@@ -41,14 +43,14 @@ function xmldb_block_usp_ews_upgrade($oldversion, $block) {
         $table->add_field('title', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->add_field('icon', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, null);
         $table->add_field('now', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('loginweight', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('completionweight', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('interactionweight', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('minlogin', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('loginweight', XMLDB_TYPE_INTEGER, '3', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('completionweight', XMLDB_TYPE_INTEGER, '3', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('interactionweight', XMLDB_TYPE_INTEGER, '3', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('minlogin', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, null);
         $table->add_field('studentview', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '1');
         $table->add_field('monitoreddata', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
-        $table->add_field('coursestartdate', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('lastupdatetimestamp', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('coursestartdate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('lastupdatetimestamp', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('lastlogid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('processnew', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0');
 
@@ -70,7 +72,7 @@ function xmldb_block_usp_ews_upgrade($oldversion, $block) {
         $table->add_field('lastsevenlogin', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, null);
         $table->add_field('myinteractcount', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
         $table->add_field('classinteractcount', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('interactindex', XMLDB_TYPE_FLOAT, '12', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('interactindex', XMLDB_TYPE_FLOAT, '5', null, XMLDB_NOTNULL, null, null);
         $table->add_field('logindetail', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
         $table->add_field('interactiondetail', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
         $table->add_field('timestamp', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
@@ -84,7 +86,7 @@ function xmldb_block_usp_ews_upgrade($oldversion, $block) {
         }
 
         // Usp_ews savepoint reached.
-        upgrade_block_savepoint(true, 2014030100, 'usp_ews');
+        upgrade_block_savepoint(true, 2014031204, 'usp_ews');
     }
 
     return $result;
