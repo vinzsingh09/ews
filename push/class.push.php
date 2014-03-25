@@ -96,36 +96,45 @@
 		}
 
 		
-		
-				function pull_usp_ews_log_record() {
-			// if there are courses with EWS
-			// then fore each course
-			$qry = "SELECT * FROM usp_ews_log";
+			// pulling maximum to see if pull would work this way
+		function pull_usp_ews_interaction() {
+			// moodle db connection
+			$DB = $this->getDB();
+			
+            // if there are courses with EWS
+            // then fore each course
+            $qry = "SELECT * FROM usp_ews_interaction";
 
-			$rs = $this->execute_query($qry);
-		   
-		    if(mysql_num_rows($rs) == 0){
-				throw new Exception(get_string('cronpullinteractionfail', 'block_usp_ews'));
+            $rs = $this->execute_query($qry);
+           
+            if(mysql_num_rows($rs) == 0){
+                throw new Exception(get_string('cronpullinteractionfail', 'block_usp_ews'));
                 return false;
             }
-			
-			$result = array();
-			for($i = 0; $line = mysql_fetch_array($rs, MYSQL_ASSOC); $i++){
-				$row = new stdclass;
-				$row->id = $line['id'];
-				$row->time = $line['time'];
-				$row->userid = $line['userid'];
-				$row->ip = $line['ip'];
-				$row->course = $line['course'];
-				$row->module = $line['module'];
-				$row->cmid = $line['cmid'];
-				$row->action = $line['action'];
-				
-				$result[] = $row;
-			}
-			 return $result;
-		}
-		
+            
+            $maxinsertpoint = EWS_DEFAULT_MAX_INSERT_RECORD;
+            
+			$sql = "INSERT INTO {usp_ews_interaction} (id, userid, courseid, lastsevenlogin, myinteractcount, classinteractcount, interactindex, logindetail, interactiondetail, timestamp) VALUES";
+            for($i = 0; $line = mysql_fetch_array($rs, MYSQL_ASSOC); $i++){
+               
+                if($i == $maxinsertpoint){
+                    $mdl_query = rtrim($sql, " ,");
+					$result = $DB->execute($mdl_query);
+                    $sql = "INSERT INTO {usp_ews_interaction} (id, userid, courseid, lastsevenlogin, myinteractcount, classinteractcount, interactindex, logindetail, interactiondetail, timestamp) VALUES";
+                    
+                    $maxinsertpoint += EWS_DEFAULT_MAX_INSERT_RECORD;
+                }
+            
+                
+                $sql .= "(" . $line['id'] . "," . $line['userid'] . "," . $line['courseid'] . "," . $line['lastsevenlogin'] . "," . $line['myinteractcount'] . "," . $line['classinteractcount'] . "," . $line['interactindex'] .  ",'" . $line['logindetail'] . "','" . $line['interactiondetail'] . "'," . $line['timestamp'] . ")," ;
+            }
+             
+            $mdl_query = rtrim($sql, " ,");
+			$result = $DB->execute($mdl_query);
+            
+            return true;
+        }
+
 		/**
 		 *  Pulling interaction log in this table
 		 *  
