@@ -57,8 +57,24 @@
 				// empty the intarction table in mdl server
 				$DB->delete_records('usp_ews_interaction');
 				mtrace('usp_ews_interaction table empty');
-				
+			
 				// get the interaction table data from the backend
+				try{
+					//$pullinteraction = $pushdata->pull_usp_ews_interaction_record();
+					$pullinteraction = $pushdata->pull_usp_ews_interaction(); //new method
+					
+					if($pullinteraction){
+						mtrace('usp_ews_interaction table filled with new interaction');
+						$timetake = microtime_diff($starttime, microtime());
+						$pushdata->usp_ews_pull_cron_log($time, time(), $timetake, 1, get_string('cronpullinteraction', 'block_usp_ews'));
+					}
+				} catch (Exception $e) {	
+					$expectionpull= $e->getMessage(). get_string('in', 'block_usp_ews') . $e->getFile().  get_string('errorline', 'block_usp_ews') .$e->getLine() . get_string('cronpullinteractionfail', 'block_usp_ews');
+					$timetake = microtime_diff($starttime, microtime());
+					$pushdata->usp_ews_pull_cron_log($time, time(), $timetake, 0, $expectionpull);
+				} 
+				
+/*				// get the interaction table data from the backend
 				try{
 					$pullinteraction = $pushdata->pull_usp_ews_interaction_record();
 					//$pullinteraction = $pushdata->pull_usp_ews_log_record();
@@ -82,7 +98,7 @@
 					$timetake = microtime_diff($starttime, microtime());
 					$pushdata->usp_ews_pull_cron_log($time, time(), $timetake, 1, get_string('cronpullinteraction', 'block_usp_ews'));
 				}
-				
+*/				
 				// first clean the config table
 				// incase the block is removed and new blocks are added for the course
 				$clean_config = $pushdata->clean_usp_ews_config();
