@@ -356,6 +356,8 @@ $string['backtogradereport'] = 'Back to grade report';
 // Custom report string
 $string['customtabtitle'] = 'Custom Report';
 $string['customonlineinteract'] = 'Online Interaction';
+$string['config_onlineinteract_title'] = 'Online Interaction Report';
+$string['config_custom_markshet_title'] = 'Marksheet Report';
 $string['lessthan'] = 'Less than';
 $string['lessthanequal'] = 'Less than Equal to';
 $string['equalto'] = 'Equal to';
@@ -404,6 +406,7 @@ $string['yes'] = 'Yes';
 $string['cancel'] = 'Cancel';
 $string['select_activity'] = 'Select Activity to Monitor';
 $string['activity_config'] = 'Activity Configuration';
+$string['backto_activity_config'] = 'Back to Activity Configuration';
 $string['activity_config_tab'] = 'activity_config';
 $string['block_config_tab'] = 'block_config';
 $string['monitored_name'] = 'Name';
