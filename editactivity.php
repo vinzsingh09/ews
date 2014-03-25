@@ -30,10 +30,35 @@
 		array('cid'=> $course->id, 'inst_id'=> $inst_id));
 	
 	// RT - TODO: Check if this is really required
-	//$dbmanager = $DB->get_manager(); // loads ddl manager and xmldb classes
+	// it is needed when coming back to this script when editing
+	$dbmanager = $DB->get_manager(); // loads ddl manager and xmldb classes
 		
 	$modules = usp_ews_modules_in_use($COURSE->id);
-	
+
+	// having redirect before page display
+	// redirect to base url - it is there anyway 
+	if ($data = data_submitted()) 
+	{		
+		if(isset($data->submitbutton)){
+			if($record = $DB->get_record('usp_ews_config', array('courseid' => $data->cid, 'ewsinstanceid'=>$data->inst_id)))
+			{
+				$date = $data->startdate;
+				$record->coursestartdate = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
+				$record->lastupdatetimestamp = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
+				
+				$DB->update_record('usp_ews_config', $record);
+				
+				$course->startdate = $record->coursestartdate;
+				$DB->update_record('course', $course);
+
+				$params = array('inst_id'=>$data->inst_id, 'cid' => $data->cid);
+				$updateurl = new moodle_url('/blocks/usp_ews/editactivity.php', $params);
+					
+				redirect(new moodle_url($updateurl), get_string('changes_saved', 'block_usp_ews'));
+			}				
+		}
+	}
+		
 	// Set up page parameters and the navigation links
  	$PAGE->set_course($course);	
 	$PAGE->set_url($baseurl);
@@ -41,7 +66,7 @@
 	$title = get_string('config_block_title', 'block_usp_ews');
 	$PAGE->set_title($course->shortname . ': ' . $title);
 	$PAGE->set_heading($course->fullname . ': ' . $title);
-	$PAGE->navbar->add(get_string('pluginname', 'block_usp_ews'));
+	$PAGE->navbar->add(get_string('config_default_title', 'block_usp_ews'));
 	$PAGE->navbar->add($title);
 	$PAGE->set_pagelayout('standard');  
 	// for side blocks view
@@ -94,28 +119,6 @@
 	if($monitored->coursestartdate != $course->startdate)
 	{
 		require_once('coursedate_form.php');
-		
-		if ($data = data_submitted()) 
-		{		
-			if(isset($data->submitbutton)){
-				if($record = $DB->get_record('usp_ews_config', array('courseid' => $data->cid, 'ewsinstanceid'=>$data->inst_id)))
-				{
-					$date = $data->startdate;
-					$record->coursestartdate = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
-					$record->lastupdatetimestamp = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
-					
-					$DB->update_record('usp_ews_config', $record);
-					
-					$course->startdate = $record->coursestartdate;
-					$DB->update_record('course', $course);
-					
-					$params = array('inst_id'=>$data->inst_id, 'cid' => $data->cid);
-					$urladd = new moodle_url('/blocks/usp_ews/editactivity.php', $params);
-				
-					redirect(new moodle_url($urladd), get_string('changes_saved', 'block_usp_ews'));
-				}				
-			}
-		}
 	
 		if($monitored->coursestartdate == 0)
 		{
@@ -135,10 +138,10 @@
 	// if the startdate is not same then dont display anything
 	// update the startdate then continue
 	else{
+
 		// closing the usp_ews_coursedate box if the coursestart date is same and above if statement skips
 		echo $OUTPUT->box_end();
-	
-		
+
 		// list of activities in the course
 		// to check if monitoted activity still exists, to get name, visiblility
 		$modinfo_incourse = get_array_of_activities($course->id);	
