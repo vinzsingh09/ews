@@ -174,14 +174,15 @@ class block_usp_ews extends block_base {
 		// check if user is student
 		// RT - TODO: use a better (more correct Moodle way) to determine this
 		
-		
+		// get roles of the user
 		$role_assigned = get_user_roles($context);
 
 		$is_student = false;
 
+		// if more than 1 role assigned to user, then not a student
 		if(count($role_assigned) > 1){
 			$is_student = false;
-		}else{
+		}else{ // if 1 role and roleid = 5 then a student
 			foreach($role_assigned as $role){
 				if($role->roleid == 5)
 					$is_student = true;
@@ -299,7 +300,6 @@ class block_usp_ews extends block_base {
 					. $end_p;
 
 				// tooltip shows index when favourable
-				$option_param1 = array();
 				$convas = '';
 
 				$spanoptions = array('class' => 'usp_ews_tooltip_space');
