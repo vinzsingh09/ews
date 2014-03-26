@@ -47,9 +47,7 @@
 				$expection = true;
 				$expectionall .= $e->getMessage(). get_string('in', 'block_usp_ews') . $e->getFile().  get_string('errorline', 'block_usp_ews') .$e->getLine() . get_string('cronbreakline', 'block_usp_ews');
 			} 
-			/********
-			*********can be set to be done once or twice a day
-			********/
+
 			//  only if connection with backend possible
 			if($disableprocessbackend){
 			   // first syncing the data from the backend
@@ -60,7 +58,7 @@
 			
 				// get the interaction table data from the backend
 				try{
-					//$pullinteraction = $pushdata->pull_usp_ews_interaction_record();
+					// pulling interaction table
 					$pullinteraction = $pushdata->pull_usp_ews_interaction(); //new method
 					
 					if($pullinteraction){
@@ -73,32 +71,7 @@
 					$timetake = microtime_diff($starttime, microtime());
 					$pushdata->usp_ews_pull_cron_log($time, time(), $timetake, 0, $expectionpull);
 				} 
-				
-/*				// get the interaction table data from the backend
-				try{
-					$pullinteraction = $pushdata->pull_usp_ews_interaction_record();
-					//$pullinteraction = $pushdata->pull_usp_ews_log_record();
-				} catch (Exception $e) {	
-					$expectionpull= $e->getMessage(). get_string('in', 'block_usp_ews') . $e->getFile().  get_string('errorline', 'block_usp_ews') .$e->getLine() . get_string('cronpullinteractionfail', 'block_usp_ews');
-					$timetake = microtime_diff($starttime, microtime());
-					$pushdata->usp_ews_pull_cron_log($time, time(), $timetake, 0, $expectionpull);
-				} 	
-
-				// if there are some records from the interaction table
-				if(!empty($pullinteraction) && $pullinteraction != false){
-
-					foreach($pullinteraction as $rs){
-						$DB->insert_record('usp_ews_interaction', $rs, false, true);
-
-					}
-
-					
-					
-					mtrace('usp_ews_interaction table filled with new interaction');
-					$timetake = microtime_diff($starttime, microtime());
-					$pushdata->usp_ews_pull_cron_log($time, time(), $timetake, 1, get_string('cronpullinteraction', 'block_usp_ews'));
-				}
-*/				
+							
 				// first clean the config table
 				// incase the block is removed and new blocks are added for the course
 				$clean_config = $pushdata->clean_usp_ews_config();
