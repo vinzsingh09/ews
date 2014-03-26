@@ -176,7 +176,7 @@
 	$PAGE->set_context($context);
 	$title = get_string('config_block_title', 'block_usp_ews');
 	$PAGE->set_title($title);
-	$PAGE->set_heading($course->fullname);
+	//$PAGE->set_heading($course->fullname);
 	$PAGE->navbar->add($title);
 	$PAGE->set_pagelayout('standard');  
 	// for side blocks view
@@ -241,16 +241,23 @@
 				}
 			 }
 			// url for adding the activity
-			$html_url = "monitoractivity.php?inst_id=$inst_id&cid=$course->id&amp;option=0";
+			//$html_url = "monitoractivity.php?inst_id=$inst_id&cid=$course->id&amp;option=0";
+			// changed the url format
+			$params = array('inst_id' => $inst_id,'cid' => $course->id, 'option'=>0);
+			$html_url = new moodle_url('/blocks/usp_ews/monitoractivity.php', $params);
+			
 			echo $OUTPUT->container_start('usp_ewsoverviewmenus');
 			echo '&nbsp;'.get_string('select_activity', 'block_usp_ews') . ':&nbsp;';
 			echo $OUTPUT->single_select($html_url, 'modinstanceid', $instanceoptions, $instanceid, null, 'activityform');
+			echo $OUTPUT->container_end();
 			
 			// back button
-			$params = array('inst_id' => $inst_id,'cid' => $course->id);
-			$backurl = new moodle_url('/blocks/usp_ews/editactivity.php', $params);
-			echo $OUTPUT->single_button($backurl, get_string('back'));
-	
+			// div for back button in next line
+			// if want same line then 
+			echo $OUTPUT->container_start('usp_ewsobackbutton');
+			$params1 = array('inst_id' => $inst_id,'cid' => $course->id);
+			$backurl = new moodle_url('/blocks/usp_ews/editactivity.php', $params1);
+			echo $OUTPUT->single_button($backurl, get_string('backto_activity_config', 'block_usp_ews'));
 			echo $OUTPUT->container_end();
 			
 		// if some activity is selected to be added
