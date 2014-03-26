@@ -47,9 +47,6 @@
 				$DB->delete_records_select($table, $select);
 			}
 			
-			// updating all course startdate if the startdate was changed after adding the block
-			$updatestartdate = $this->update_usp_ews_config_course_startdate();
-			
 			$config = $this->get_mdl_usp_ews_config();
 			foreach($config as $cnf){
 				$configitem = new stdclass;
@@ -62,41 +59,7 @@
 
         }
 
-		// Syncing the interaction table to Moodle server
-		// Main purpose of this backend application
-		function pull_usp_ews_interaction_record() {
-			// if there are courses with EWS
-			// then fore each course
-			$qry = "SELECT * FROM usp_ews_interaction";
-
-			$rs = $this->execute_query($qry);
-		   
-		    if(mysql_num_rows($rs) == 0){
-				throw new Exception(get_string('cronpullinteractionfail', 'block_usp_ews'));
-                return false;
-            }
-			
-			$result = array();
-			for($i = 0; $line = mysql_fetch_array($rs, MYSQL_ASSOC); $i++){
-				$row = new stdclass;
-				$row->id = $line['id'];
-				$row->userid = $line['userid'];
-				$row->courseid = $line['courseid'];
-				$row->lastsevenlogin = $line['lastsevenlogin'];
-				$row->myinteractcount = $line['myinteractcount'];
-				$row->classinteractcount = $line['classinteractcount'];
-				$row->interactindex = $line['interactindex'];
-				$row->logindetail = $line['logindetail'];
-				$row->interactiondetail = $line['interactiondetail'];
-				$row->timestamp = $line['timestamp'];
-				
-				$result[] = $row;
-			}
-			 return $result;
-		}
-
-		
-			// pulling maximum to see if pull would work this way
+		// pulling interaction table from backend
 		function pull_usp_ews_interaction() {
 			// moodle db connection
 			$DB = $this->getDB();
@@ -134,25 +97,6 @@
             
             return true;
         }
-
-		/**
-		 *  Pulling interaction log in this table
-		 *  
-		 */
-		 
-		function usp_ews_pull_cron_log($cronstart, $cronstop, $timetaken, $status, $extras){
-
-			$table='usp_ews_cron_ews_mdl_log';
-			$qry = "INSERT INTO $table(crontimestart, crontimestop, timetaken, status, extras) VALUES($cronstart, $cronstop, $timetaken, $status, '$extras')";
-
-            $rs = $this->execute_query($qry);
-			
-            if(!trim($rs)==""){
-                return true;
-            }
-            return false;
-			
-		}
 		
 		/**
 		 *  Disable the backend from processing while the data is sent o backend
@@ -185,7 +129,6 @@
 			
 			$qry = "SELECT * FROM usp_ews_cron_ews";
 			
-			
 			$rs = $this->execute_query($qry);
 		   
 		    if(mysql_num_rows($rs) == 0){
@@ -202,10 +145,10 @@
 			 return false;
 
 		}
+		
 		/**
 		 *  Insert log processing while the data is sent o backend
-		 */
-		 
+		 */ 
 		function usp_ews_cron_log($cronstart, $cronstop, $timetaken, $status, $extras){
 
 			$table='usp_ews_cron_log';
@@ -219,31 +162,6 @@
             return false;
 			
 		}
-		
-		// if the course start dates doesn't match with the usp_ews_config data then change the satrtdate as in course table
-		// the whole system relies in the startdate so this should always be accurate
-		public function update_usp_ews_config_course_startdate() {
-
-			$DB = $this->getDB();
-			$sql = "SELECT e.id, e.courseid, c.startdate, e.coursestartdate 
-					FROM {usp_ews_config} e, {course} c 
-					WHERE e.courseid=c.id AND e.coursestartdate != c.startdate";
-	
-			$result = $DB->get_records_sql($sql);
-			
-			if(!empty($result)){
-				foreach($result as $rs){
-					$course = new stdclass;
-					$course->id = $rs->id;
-					$course->coursestartdate = $rs->startdate;
-					$course->lastupdatetimestamp = $rs->startdate;
-					$update = $DB->update_record('usp_ews_config', $course, true);
-				}
-			
-			}
-
-			return true;
-        }
 		
 		// deleting the instances from the usp_ews_config if the block was deleted
 		//the sql can be improved using more joins
@@ -421,22 +339,7 @@
 			}
 			return false;
         }
-		
-		// getting last cron id from timestamp table
-		public function get_last_cron_timestamp(){
-			$DB = $this->getDB();
-			//$sql = "SELECT lastupdatedid, timestamp  FROM {usp_ews_timestamp} ORDER BY id DESC Limit 0, 1";
-			$sql = "SELECT lastupdatedid, timestamp  FROM {usp_ews_timestamp} WHERE id=(SELECT MAX(id) FROM {usp_ews_timestamp});";
-			$lastcron = $DB->get_record_sql($sql);
-			
-			if ($lastcron != null){
-				return $lastcron;
-			}
-			else 
-				return null;
-		
-		}
-		
+
 		// trigger the last id from the log table
 		// using id as timestamp are repeated
 		// to the instant the id is triggered then use that id to get the range of logs and push to backend
@@ -470,25 +373,6 @@
 			}
 		}
 		
-		// getting all the logs from mdl_log from previous cron id to current triggered id
-		// @ param int $id					previous cron log id
-		// @ param int $currentlastlogid    current triggered log id
-		// @ param int $lastcron		    timestamp can be used instead of id
-		public function get_all_mdl_log($course=0, $id=0, $currentlastlogid=0, $lastcron=0){
-			
-			$DB = $this->getDB();		
-			$table = 'log';
-
-			$select = "id > $id AND id <= $currentlastlogid AND course=$course AND cmid != 0";
-				
-			$logs = $DB->get_records_select($table, $select); 
-			
-			if ($logs != null)
-				return $logs;
-			else 
-				return false; 
-		}
-		
 		
 		/*
 		* getting the log to send to back
@@ -511,30 +395,21 @@
 				return false; 
 		}
 		
-		// function used to insert the timestamp of the last pused timestamp and log id
-		// @ param int $id             last log id
-		// @ param string $timestamp   last timestamp
-		// @ param string $description if any description 
-		// @ param string $extras      if any errors and they state the error
-		// @ param int $status         if successfull or not
-		public function insert_record_mdl_timestamp($id, $timestamp, $description='', $extras='', $status=1){
-			$DB = $this->getDB();
-			
-			$values = new stdclass;
-			$values->lastupdatedid = $id;
-			$values->timestamp = $timestamp;
-			
-			if($description != '')
-				$values->description = $description;			
-			if($extras != '')
-				$values->extras = $extras;			
-			if($status == 0)
-				$values->status = $status;
-				
-			$DB->insert_record('usp_ews_timestamp', $values);
-		
+		// logging pull cron
+		function usp_ews_pull_cron_log($cronstart, $cronstop, $timetaken, $status, $extras){
+
+			$table='usp_ews_cron_ews_mdl_log';
+			$qry = "INSERT INTO $table(crontimestart, crontimestop, timetaken, status, extras) VALUES($cronstart, $cronstop, $timetaken, $status, '$extras')";
+
+            $rs = $this->execute_query($qry);
+
+            if(!trim($rs)==""){
+                return true;
+            }
+            return false;
+
 		}
-		
+
 		// updates the last log id till when the logs are being pushed
 		// gets the last timestamp and lastlogid sent and updates the config table
 		public function update_config_table($id, $lastlogid, $time){
@@ -566,9 +441,9 @@
 			return true;
 
 		}	
+		
 		// function used to empty the given table
 		//  @param string $table   The table that needs to be emptyed 
-
 		public function trancate_table($table) {
 
 		  // first truncate the table
@@ -581,6 +456,7 @@
             return false;
 			
         }
+		
 		// getter
 		// gets the database configuration
 		public function getDB() {
