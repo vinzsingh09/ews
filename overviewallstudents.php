@@ -11,9 +11,6 @@
 	require_once($CFG->dirroot.'/blocks/usp_ews/lib.php');
     require_once($CFG->libdir.'/tablelib.php');
     require_once($CFG->libdir.'/filelib.php');
-
-	// calls for jpgragh library
-	$PAGE->requires->js(new moodle_url($CFG->wwwroot . '/blocks/usp_ews/js/highcharts.js'));
 	
     define('USER_SMALL_CLASS', 20);   // Below this is considered small
     define('USER_LARGE_CLASS', 200);  // Above this is considered large
