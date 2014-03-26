@@ -7,15 +7,10 @@
 * popular activities
 */
 	// Include required files
-    require_once(dirname(__FILE__) . '/../../config.php'); // moodle config file
-	require_once($CFG->dirroot.'/blocks/usp_ews/lib.php'); // usp_ews library file
     require_once($CFG->dirroot.'/course/lib.php');
     require_once($CFG->dirroot.'/report/log/locallib.php');
     require_once($CFG->libdir.'/adminlib.php');
 
-	// calls for jpgragh library
-	$PAGE->requires->js(new moodle_url($CFG->wwwroot . '/blocks/usp_ews/js/highcharts.js'));
-	
 	// gather form data
 	$id          = optional_param('cid', 0, PARAM_INT);// Course ID
 	$group       = optional_param('group', 0, PARAM_INT); // Group to display
