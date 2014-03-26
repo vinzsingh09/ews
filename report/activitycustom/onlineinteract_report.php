@@ -87,8 +87,7 @@
 	$PAGE->set_pagelayout('admin');
 
 	$PAGE->set_context($context);
-	$strblockname = get_string("config_default_title", "block_usp_ews");
-	$title = get_string('overview', 'block_usp_ews');
+	$title = get_string('config_onlineinteract_title', 'block_usp_ews');
 	$PAGE->set_title($title);
 	
 	// Start page output
