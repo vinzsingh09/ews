@@ -73,8 +73,7 @@
 	$PAGE->set_url($url);
 
 	$PAGE->set_context($context);
-	$strblockname = get_string("config_default_title", "block_usp_ews");
-	$title = get_string('overview', 'block_usp_ews');
+	$title = get_string('config_custom_markshet_title', 'block_usp_ews');
 	$PAGE->set_title($title);
 	
 	// Start page output
