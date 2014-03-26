@@ -110,7 +110,6 @@ $string['ensure_contact'] = 'Please contact Mr. Vineet Singh on : singh_vn@usp.a
 $string['ensure_agree'] = 'I agree that the setting is correct. ';
 $string['ensure_confirm'] = 'Confirm and Continue';
 
-
 // Adding Excel Report
 $string['excel'] = 'Generate Excel Report';
 $string['filter_report'] = 'Filter Report by ID';
@@ -153,7 +152,6 @@ $string['activity_setting_infor'] = 'Some of the activity needs attention, pleas
 $string['aestrict'] = ' * ';
 $string['activity_setting_msg'] = 'The following activities marked with (*) needs attention since there settings have beeing changed.<br/> Please click edit icon to configure the setting and save the changes inorder to confirm the configuration is ok.';
 
-
 //tooltips
 $string['interactiongreen'] = 'Your participation is satisfactory';
 $string['interactionorange'] = 'Your participation is average';
@@ -174,6 +172,7 @@ $string['progress_tracker'] = 'Progress Tracker';
 $string['completion_percent'] = 'My Completion';
 $string['check_progress'] = 'Check your progress';
 $string['completion_tillnow'] = 'Completion rate as of:';
+
 // color key
 $string['colorkeyheading'] = 'Colour Key:';
 $string['keybox'] = '';
@@ -200,7 +199,6 @@ $string['login_interact'] = 'Login Frequency (days)';
 $string['interaction_processing'] = 'Your Participation graph is currently in process..Check it sometimes later.';
 $string['lastupdated'] = 'The information was last updated on: ';
 
-
 // popup
 $string['pendingactivity'] = 'Pending Activities';
 $string['upcomingactivity'] = 'Upcoming Activities';
@@ -214,7 +212,6 @@ $string['sepcomma'] = 'Comma';
 $string['septab'] = 'Tab';
 $string['separator'] = 'Separator';
 $string['uploadcsvfile'] = 'Upload CSV File';
-
 
 // Help strings
 $string['why_set_the_title'] = 'Why you might want to set the block instance title?';
@@ -437,7 +434,6 @@ $string['selected_activity'] = 'Selected activity: ';
 $string['activityexcelreport'] = 'Custom Activity Report';
 $string['whohave'] = ' who have ';
 
-
 // grade custom
 $string['choosegradeitem'] = 'Choose Grade Item';
 $string['select_gradeitem'] = 'Select Grade Item for Information';
@@ -459,7 +455,6 @@ $string['cronwait'] = 'Waiting for backend process, skipped cron.';
 $string['cronpullinteraction'] = 'Pulled interaction table successfully.';
 $string['cronpullinteractionfail'] = 'Error in connection or No records in EWS interaction.. ';
 
-
 $string['notconfigured'] = '{$a} hasn\'t been configured yet.';
 $string['currentdate'] = 'Current Course Start Date: ';
 $string['datemismatch'] = 'Course Start Date is different.';
@@ -469,7 +464,6 @@ $string['setdate'] = '';
 $string[''] = '';
 $string[''] = '';
 $string[''] = '';
-
 
 /******** About US string ************/
 $string['about_us_intro'] = 'Early Warning System is an experimental module which provides a weekly snapshot of the most important activities in the course. The system is purely designed as an indication to encourage your participation in areas that need more attention rather than categorizing your performance. It is just a guide, if you have unsatisfactory result on EWS dashboard, it doesn\'t mean you\'ll fail the course..';
