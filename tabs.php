@@ -63,7 +63,7 @@
 			// activity custom report
 			$row[] = new tabobject('onlineinteract_report', $urlonlineinteract_report, get_string('customonlineinteract','block_usp_ews'));    
 			// grade custom report
-			$row[] = new tabobject('coursework_report', $urlcoursework_report, get_string('coursework','block_usp_ews'));			
+			$row[] = new tabobject('coursework_report', $urlcoursework_report, get_string('myach','block_usp_ews'));			
 		}
 	}
 	
