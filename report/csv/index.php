@@ -550,9 +550,6 @@
 			$configureddata = $DB->get_record('usp_ews_config', array('courseid' => $course->id, 'ewsinstanceid'=>$inst_id));
 				
 			$monitoreddata = json_decode($configureddata->monitoreddata);
-			// Check if activities/resources have been selected in config
-			//$events = usp_ews_event_information($config, $courseid, $modules);
-			//$events = usp_ews_event_information($course->id, $monitoreddata, $modules);
 				
 			// if events not selected then 
 			// displays no event or no event visible message
@@ -598,6 +595,11 @@
 
 					$userinteraction = $DB->get_record('usp_ews_interaction', array('userid' => $user->id, 'courseid' => $course->id));
 					
+					//login detail of the student for the graph
+					$logindetail = '';
+					if(!empty($userinteraction))
+						$logindetail = $userinteraction->logindetail;
+				
 					if(!empty($userinteraction))
 						$lastsevenlogin = $userinteraction->lastsevenlogin;
 					else
@@ -632,7 +634,10 @@
 							$data[] = $lastaccess;
 						}
 						// adds the number login to array
-						$data[] = $lastsevenlogin . '&nbsp;&nbsp;<a><img src="'. $OUTPUT->pix_url('t/scales') .'" alt="" /></a>';
+						$var = "var$user->idnumber";	
+						$namestudent = $user->firstname . ' ' . $user->lastname;
+						$graph = usp_ews_generate_overall_login_graph($var, $user, $logindetail, $namestudent);
+						$data[] = $lastsevenlogin . $graph;
 
 						$events = usp_ews_event_information($course->id, $monitoreddata, $user->id, $modules);
 						
@@ -755,3 +760,166 @@
 	echo $OUTPUT->container_end();
 	echo $OUTPUT->footer();
 
+?>
+
+
+<script>
+
+	// javascript for login popup 
+    $(document).ready(function () {
+
+	 var myDataValues = new Array(); 
+	 var myAxes;
+	 var seriesCollection;
+	 var myChart;
+	 
+      $(".openloginpopup").click(function () {
+			var renderto;
+			var studentidnum = $(this).attr("stutidnum");
+			var studentid = $(this).attr("stutid");
+			var logindetail = jQuery.parseJSON(($(this).attr("var"+studentidnum)));
+			console.log(logindetail);
+
+			var studentname = $(this).attr("stutname");
+
+			var student = studentname + ' (' + studentidnum + ')';
+			
+			var loginstud = new Array();
+			var loginclass = new Array();
+			
+			
+            var i =0;
+			$.each(logindetail, function(key, element) {
+				loginstud[i] = parseFloat(element.my);
+				loginclass[i] = parseFloat(element.cls);
+				i++;
+			});
+		
+			$("#loginpopup"+studentid).show();
+			renderto = "#loginchart"+studentid;
+			makelogingraph(student, loginstud, loginclass, renderto);
+			
+			
+			$(".usp_ews_loginclosebtn").click(function () {
+				$("#loginpopup"+studentid).hide(400, "swing"); 
+		    });
+      });    
+	  
+// making the graph
+ function makelogingraph(stu, loginstud, loginclass,renderto) {
+		
+	YUI().use('charts-legend', function (Y) 
+	{ 
+	 
+		for (var i=0;i<loginstud.length;i++)
+		{
+			var wk = i+1;
+			myDataValues[i] = {week:wk, mylogin:loginstud[i], classlogin:loginclass[i]};
+		}
+		
+        //Define our axes for the chart.
+        myAxes = {
+            login_graph:{
+                keys:["mylogin", "classlogin"],
+                position:"left",
+                type:"numeric",
+				//maximum: 5,
+				minimum: 0,
+
+				title: '<?php print_string('gp_loginyaxis', 'block_usp_ews'); ?>',
+                styles:{
+                    majorTicks:{
+                        display: "Day"
+                    }
+                }
+            },
+            dateRange:{
+                keys:["week"],
+                position:"bottom",
+                type:"category",
+				title: '<?php print_string('gp_loginxaxis', 'block_usp_ews'); ?>',
+                styles:{
+                    majorTicks:{
+                        display: "none"
+                    },
+                    label: {
+                       // rotation:-45,
+                        margin:{top:5}
+                    }
+                }
+            }
+        };
+       
+        //define the series 
+        seriesCollection = [
+         {
+                type:"column",
+                xAxis:"dateRange",
+                yAxis:"login_graph",
+                xKey:"week",
+                xDisplayName: 'Week',
+                yKey:"mylogin",
+                yDisplayName: stu,
+                styles: {
+				    fill: {
+                            color: "#4572A7" 
+                    },
+                    border: {
+                        weight: 1,
+                        color: "#cbc8ba"
+                    },
+                    over: {
+                        fill: {
+                            alpha: 0.7
+                        }
+                    }
+                }
+            },
+            {
+                type:"column",
+                xAxis:"dateRange",
+                yAxis:"login_graph",
+                xKey:"week",
+                xDisplayName:'Week',
+                yKey:"classlogin",
+                yDisplayName:'<?php print_string('leg_loginclass', 'block_usp_ews'); ?>',
+                styles: {
+                    marker:{
+                        fill: {
+                            color: "#C35F5C" 
+                        },
+                        border: {
+                            weight: 1,
+                            color: "#cbc8ba"
+                        },
+                        over: {
+                            fill: {
+                                alpha: 0.7
+                            }
+                        }
+                    }
+                }
+            }
+        ];
+		
+		var legend = {
+			position: "bottom",
+		};
+        //instantiate the chart
+        myChart = new Y.Chart({
+                            dataProvider:myDataValues, 
+							legend:legend,	
+                            axes:myAxes, 
+                            seriesCollection:seriesCollection, 
+                            horizontalGridlines: true,
+                            verticalGridlines: true,
+                            render:renderto
+        });	
+    });
+	
+
+  }	
+
+ });
+	
+  </script>
