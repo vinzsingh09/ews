@@ -30,10 +30,6 @@
 	require_login($course, false);
 	require_capability('block/usp_ews:overview', $context);
 
-	// Get specific block config
-	//$block = $DB->get_record('block_instances', array('id' => $inst_id));
-	//$config = unserialize(base64_decode($block->configdata));
-
 	$modules = usp_ews_modules_in_use($course->id);
 	if (empty($modules)) {
 		echo get_string('no_events_config_message', 'block_usp_ews');
@@ -88,7 +84,6 @@
 		if (!$fp = fopen($filename, "r")) {
 			print_error('cannotopenfile');
 		}
-
 		// --- get header (field names) ---
 		$header = explode($csv_delimiter, fgets($fp, CSV_LINE_LENGTH));
 
@@ -155,28 +150,13 @@
 	
 	// Sending HTTP headers
 	$myxls = $workbook->add_worksheet($filename);
-	
-	//updates in v2.6
-	// formating the table and heading of the table
-	//$format =& $workbook->add_format();
 	$format = $workbook->add_format(array('color'=>'red', 'align'=>'left', 'bold'=>1));
 	
 	// formating each rows of the table
-	//$formatd = & $workbook->add_format();
 	$formatd = $workbook->add_format(array('align'=>'left'));
-
-	//$formate = & $workbook->add_format();
 	$formate = $workbook->add_format(array('align'=>'center'));
-	
-	//$format_incom = & $workbook->add_format();
 	$format_incom = $workbook->add_format(array('color'=>'red'));
-	//$format_incom->set_color('red');
-
-	//$formatd->set_border(1);
-	//$formatitle = & $workbook->add_format();
 	$formatitle = $workbook->add_format(array('size'=>20, 'bold'=>1));
-	//$formatitle->set_bold(1);
-	//$formatitle->set_size(12);
 	// setting column width
 	$myxls->set_column(0, 6, 15);
 	// formating the title of the report in excel
@@ -290,7 +270,6 @@
 				$myxls->write_string($rownum, $colnum ++, $rows['interaction'], $formate);
 				$myxls->write_string($rownum, $colnum ++, $rows['coursework'], $formate);
 				$myxls->write_string($rownum, $colnum ++, $rows['notattemptedactivity'], $format_incom);
-				//$myxls->write_string($rownum, $colnum ++, $rows['email'], $formatd);
 
 				// putting postion to next row where writing to excel will continue	
 				$rownum ++;	
@@ -392,7 +371,6 @@
 				$myxls->write_string($rownum, $colnum ++, $rows['interaction'], $formate);
 				$myxls->write_string($rownum, $colnum ++, $rows['coursework'], $formate);
 				$myxls->write_string($rownum, $colnum ++, $rows['notattemptedactivity'], $format_incom);
-				//$myxls->write_string($rownum, $colnum ++, $rows['email'], $formatd);
 
 				// putting postion to next row where writing to excel will continue	
 				$rownum ++;	
