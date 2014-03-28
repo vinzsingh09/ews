@@ -71,6 +71,7 @@ define('EWS_DEFAULT_DECIMAL_POINT', 2);
 define('EWS_DEFAULT_MAX_CRON_TIME', 600);
 define('EWS_DEFAULT_MAX_RECORD', 1000); // estimated for 50 courses data
 define('EWS_DEFAULT_MAX_RECORD_PER_SEC', 3000);
+define('EWS_DEFAULT_MAX_INSERT_RECORD', 500); // inserting in batch
 define('EWS_DEFAULT_LASTLOGID', 0);
 define('EWS_DEFAULT_PROCESSNEW', 1);
  
