@@ -70,7 +70,7 @@
 
             $rs = $this->execute_query($qry);
            
-            if(mysql_num_rows($rs) == 0){
+            if(mysqli_num_rows($rs) == 0){
                 throw new Exception(get_string('cronpullinteractionfail', 'block_usp_ews'));
                 return false;
             }
@@ -78,7 +78,7 @@
             $maxinsertpoint = EWS_DEFAULT_MAX_INSERT_RECORD;
             
 			$sql = "INSERT INTO {usp_ews_interaction} (id, userid, courseid, lastsevenlogin, myinteractcount, classinteractcount, interactindex, logindetail, interactiondetail, timestamp) VALUES";
-            for($i = 0; $line = mysql_fetch_array($rs, MYSQL_ASSOC); $i++){
+            for($i = 0; $line = mysqli_fetch_array($rs, MYSQL_ASSOC); $i++){
                
                 if($i == $maxinsertpoint){
                     $mdl_query = rtrim($sql, " ,");
@@ -131,11 +131,11 @@
 			
 			$rs = $this->execute_query($qry);
 		   
-		    if(mysql_num_rows($rs) == 0){
+		    if(mysqli_num_rows($rs) == 0){
                 return false;
             }
 			
-			$line = mysql_fetch_array($rs, MYSQL_ASSOC);
+			$line = mysqli_fetch_array($rs, MYSQL_ASSOC);
 			
 			if($line['processnow'] == 1){
 				return true;
