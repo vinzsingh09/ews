@@ -12,30 +12,20 @@
             //include the file containing the password, etc
             require("config.php");
 
-            // connect to your mysql database
-            $dbconn = mysql_connect($hostname, $username, $password);
+            // connect to your mysqli database
+            $dbconn = mysqli_connect($hostname, $username, $password, $database);
             // if could not connect return false
             if(!$dbconn)
                 return false;
-
-            // if could not switch to the database then return false
-            if(!$this->select_db($database, $dbconn))
-                return false;
-
+				
             // return database connection handle.
             return $dbconn;
-        }
-
-        // method to select one of the databases
-        function select_db($database, $dbconn)
-        {
-            return mysql_select_db($database, $dbconn);
         }
 
         // method to close the database connection
         function disconnect_db($dbconn)
         {
-            mysql_close($dbconn);
+            mysqli_close($dbconn);
         }
 
         // method to execute  queries 
@@ -45,7 +35,7 @@
             $dbconn = $this->connect_db();
 
             // execute the query
-            $result = mysql_query($qry, $dbconn);
+            $result = mysqli_query($dbconn, $qry);
 
             // if there was an error in executing the query
             if(!$result)
@@ -66,7 +56,7 @@
         // method to get a row from the resultset
         function get_row($result)
         {
-            $line = mysql_fetch_array($result, MYSQL_ASSOC);
+            $line = mysqli_fetch_array($result, MYSQL_ASSOC);
             return $line;
         }
     }
